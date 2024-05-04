@@ -71,6 +71,14 @@ public class GeneratorUtilsTests {
     }
 
     @Test
+    public void testGetDimensionParameter() {
+        assertEquals(GeneratorUtils.getDimensionParameter(0), "X0 x0");
+        assertEquals(GeneratorUtils.getDimensionParameter(1), "X1 x1");
+        assertEquals(GeneratorUtils.getDimensionParameter(2), "X2 x2");
+        assertEquals(GeneratorUtils.getDimensionParameter(3), "X3 x3");
+    }
+
+    @Test
     public void testGetGenericTypeInt() {
         assertEquals(GeneratorUtils.getGenericType(0), "Tuple0D");
         assertEquals(GeneratorUtils.getGenericType(1), "Tuple1D<X0>");
@@ -87,6 +95,14 @@ public class GeneratorUtilsTests {
         assertEquals(GeneratorUtils.getGenericType(intList(0, 1, 2)), "Tuple3D<X0, X1, X2>");
         assertEquals(GeneratorUtils.getGenericType(intList(0, 1, 3)), "Tuple3D<X0, X1, X3>");
         assertEquals(GeneratorUtils.getGenericType(intList(5, 6, 1, 2)), "Tuple4D<X5, X6, X1, X2>");
+    }
+
+    @Test
+    public void getShortGenericType() {
+        assertEquals(GeneratorUtils.getShortGenericType(0), "Tuple0D");
+        assertEquals(GeneratorUtils.getShortGenericType(1), "Tuple1D<>");
+        assertEquals(GeneratorUtils.getShortGenericType(2), "Tuple2D<>");
+        assertEquals(GeneratorUtils.getShortGenericType(3), "Tuple3D<>");
     }
 
     @Test
@@ -107,4 +123,6 @@ public class GeneratorUtilsTests {
         assertEquals(GeneratorUtils.getGenerics(intList(0, 1, 3)), "X0, X1, X3");
         assertEquals(GeneratorUtils.getGenerics(intList(5, 6, 1, 2)), "X5, X6, X1, X2");
     }
+
+
 }

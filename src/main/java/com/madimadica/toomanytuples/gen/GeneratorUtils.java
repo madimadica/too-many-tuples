@@ -2,6 +2,8 @@ package com.madimadica.toomanytuples.gen;
 
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GeneratorUtils {
 
@@ -59,7 +61,7 @@ public class GeneratorUtils {
         }
         StringJoiner sj = new StringJoiner(", ");
         for (int i = 0; i < dimension; ++i) {
-            sj.add("X" + i + " x" + i);
+            sj.add(getDimensionParameter(i));
         }
         return sj.toString();
     }
@@ -75,9 +77,18 @@ public class GeneratorUtils {
         }
         StringJoiner sj = new StringJoiner(", ");
         for (Integer dim : dimensions) {
-            sj.add("X" + dim + " x" + dim);
+            sj.add(getDimensionParameter(dim));
         }
         return sj.toString();
+    }
+
+    /**
+     * Generates a parameter for the given dimension, such as {@code "X3, x3"}
+     * @param dimension to create a parameter for
+     * @return String Java parameter
+     */
+    public static String getDimensionParameter(int dimension) {
+        return "X" + dimension + " x" + dimension;
     }
 
     /**
@@ -92,6 +103,19 @@ public class GeneratorUtils {
             return rawType;
         }
         return rawType + "<" + getGenerics(dimension) + ">";
+    }
+
+    /**
+     * Returns a generic type with no generic arguments, such as {@code Tuple2D<>} or {@code Tuple0D}
+     * @param dimension of Tuple
+     * @return String of shorthand Java type
+     */
+    public static String getShortGenericType(int dimension) {
+        String rawType = getClassName(dimension);
+        if (dimension == 0) {
+            return rawType;
+        }
+        return rawType + "<>";
     }
 
     /**
@@ -126,5 +150,11 @@ public class GeneratorUtils {
         return getDimensionArguments(dimensions).toUpperCase();
     }
 
+    public static List<Integer> range(int startInclusive, int endExclusive) {
+        return IntStream.range(startInclusive, endExclusive).boxed().collect(Collectors.toList());
+    }
 
+    public static List<Integer> rangeClosed(int startInclusive, int endInclusive) {
+        return IntStream.range(startInclusive, endInclusive).boxed().collect(Collectors.toList());
+    }
 }
