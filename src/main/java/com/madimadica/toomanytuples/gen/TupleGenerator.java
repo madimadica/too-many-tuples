@@ -1,9 +1,9 @@
-package com.madimadica.toomanytuples;
+package com.madimadica.toomanytuples.gen;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.madimadica.toomanytuples.GeneratorUtils.*;
+import static com.madimadica.toomanytuples.gen.GeneratorUtils.*;
 
 public class TupleGenerator {
     private final StringBuilder src = new StringBuilder();

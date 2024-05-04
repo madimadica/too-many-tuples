@@ -1,4 +1,4 @@
-package com.madimadica.toomanytuples;
+package com.madimadica.toomanytuples.gen;
 
 public class CodeGenerator {
     public static int GLOBAL_MAX_DIM = 10;

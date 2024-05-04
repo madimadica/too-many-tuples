@@ -1,4 +1,4 @@
-package com.madimadica.toomanytuples;
+package com.madimadica.toomanytuples.gen;
 
 import java.util.List;
 import java.util.StringJoiner;
