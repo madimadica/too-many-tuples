@@ -126,9 +126,5 @@ public class GeneratorUtils {
         return getDimensionArguments(dimensions).toUpperCase();
     }
 
-    public static String getDimensionArg(int dim) {
-        return "X" + dim + " x" + dim;
-    }
-
 
 }

@@ -43,15 +43,12 @@ public class TupleGenerator {
 
     private void addClassDeclaration() {
         src.append("public class ").append(getGenericType(dimensions));
-        src.append(" {");
+        src.append(" {\n");
     }
 
     private void addClassAttributes() {
         for (int i = 0; i < dimension; ++i) {
-            if (i > 0) {
-                newLine();
-            }
-            src.append("\tprivate ").append(getDimensionArg(i)).append(";");
+            src.append("\tprivate ").append(getDimensionParameters(i)).append(";");
         }
     }
 
@@ -87,7 +84,7 @@ public class TupleGenerator {
     }
 
     private void addSetter(int dim) {
-        src.append("\tpublic void setX").append(dim).append("(").append(getDimensionArg(dim)).append(") {\n")
+        src.append("\tpublic void setX").append(dim).append("(").append(getDimensionParameters(dim)).append(") {\n")
                 .append("\t\tthis.x").append(dim).append(" = x").append(dim).append(";\n\t}");
     }
 
@@ -126,6 +123,10 @@ public class TupleGenerator {
         String args = newDimensions.toString().toLowerCase();
         src.append("\tpublic <T> ").append(returnType).append(" insertX").append(dim).append("(T t) {\n");
         src.append("\t\treturn new ").append(returnType).append("(").append(args).append(");\n\t}");
+    }
+
+    private void addMultiInsert(int newDimension) {
+
     }
 
 
