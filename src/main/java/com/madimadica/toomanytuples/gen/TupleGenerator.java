@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
+import static com.madimadica.toomanytuples.gen.CodeGenerator.GLOBAL_MAX_DIM;
 import static com.madimadica.toomanytuples.gen.GeneratorUtils.*;
 
 public class TupleGenerator {
@@ -41,8 +42,7 @@ public class TupleGenerator {
     }
 
     private void addClassDeclaration() {
-        src.append("public class ").append(className);
-        src.append(getDimensionGenerics(dimensions));
+        src.append("public class ").append(getGenericType(dimensions));
         src.append(" {");
     }
 
@@ -60,7 +60,7 @@ public class TupleGenerator {
     }
 
     private void addAllArgsConstructor() {
-        src.append("\tpublic ").append(className).append('(').append(getDimensionArgs(dimensions)).append(") {");
+        src.append("\tpublic ").append(className).append('(').append(getDimensionParameters(dimensions)).append(") {");
         for (int i = 0; i < dimension; ++i) {
             src.append("\n\t\tthis.x").append(i).append(" = x").append(i).append(";");
         }
@@ -93,18 +93,23 @@ public class TupleGenerator {
 
     private void addInserts() {
         // Don't generate inserts if at max dim
-        if (dimension == CodeGenerator.GLOBAL_MAX_DIM) {
+        if (dimension == GLOBAL_MAX_DIM) {
             return;
         }
-        for (int i = 0; i <= dimension && i < CodeGenerator.GLOBAL_MAX_DIM; ++i) {
+        for (int i = 0; i <= dimension && i < GLOBAL_MAX_DIM; ++i) {
             addInsert(i);
             newLine(2);
+        }
+
+        // if dim 3, and max is 10, need to add inserts for X4, ... X10
+        for (int newDim = dimension + 1; newDim <= GLOBAL_MAX_DIM; ++newDim) {
+            addMultiInsert(newDim);
         }
         // add variable adds between dimension and maxGlobal
     }
 
     private void addInsert(int dim) {
-        String newClassName = className(dimension + 1);
+        String newClassName = getClassName(dimension + 1);
         // Dimension 0 is not an edge case here
         StringJoiner newDimensions = new StringJoiner(", ");
         for (int i = 0; i < dimension; ++i) {
