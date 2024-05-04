@@ -3,6 +3,7 @@ package com.madimadica.toomanytuples.gen;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.stream.IntStream;
 
 import static com.madimadica.toomanytuples.gen.CodeGenerator.GLOBAL_MAX_DIM;
 import static com.madimadica.toomanytuples.gen.GeneratorUtils.*;
@@ -15,7 +16,7 @@ public class TupleGenerator {
 
     public TupleGenerator(int dimension) {
         this.dimension = dimension;
-        this.className = "Tuple" + dimension + "D";
+        this.className = getClassName(dimension);
         dimensions = new ArrayList<>();
         for (int i = 0; i < dimension; ++i) {
             dimensions.add(i);
@@ -48,7 +49,7 @@ public class TupleGenerator {
 
     private void addClassAttributes() {
         for (int i = 0; i < dimension; ++i) {
-            src.append("\tprivate ").append(getDimensionParameters(i)).append(";");
+            src.append("\tprivate ").append(getDimensionParameter(i)).append(";");
         }
     }
 
@@ -84,7 +85,7 @@ public class TupleGenerator {
     }
 
     private void addSetter(int dim) {
-        src.append("\tpublic void setX").append(dim).append("(").append(getDimensionParameters(dim)).append(") {\n")
+        src.append("\tpublic void setX").append(dim).append("(").append(getDimensionParameter(dim)).append(") {\n")
                 .append("\t\tthis.x").append(dim).append(" = x").append(dim).append(";\n\t}");
     }
 
@@ -101,6 +102,7 @@ public class TupleGenerator {
         // if dim 3, and max is 10, need to add inserts for X4, ... X10
         for (int newDim = dimension + 1; newDim <= GLOBAL_MAX_DIM; ++newDim) {
             addMultiInsert(newDim);
+            newLine(2);
         }
         // add variable adds between dimension and maxGlobal
     }
