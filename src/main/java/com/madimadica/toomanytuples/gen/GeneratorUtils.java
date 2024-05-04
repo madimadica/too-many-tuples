@@ -30,4 +30,8 @@ public class GeneratorUtils {
     public static String getDimensionArg(int dim) {
         return "X" + dim + " x" + dim;
     }
+
+    public static String className(int dim) {
+        return "Tuple" + dim + "D";
+    }
 }

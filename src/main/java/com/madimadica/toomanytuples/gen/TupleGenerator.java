@@ -2,6 +2,7 @@ package com.madimadica.toomanytuples.gen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 import static com.madimadica.toomanytuples.gen.GeneratorUtils.*;
 
@@ -34,6 +35,7 @@ public class TupleGenerator {
         newLine();
         addGetters();
         addSetters();
+        addInserts();
         src.append("}");
         System.out.println(src);
     }
@@ -89,6 +91,37 @@ public class TupleGenerator {
                 .append("\t\tthis.x").append(dim).append(" = x").append(dim).append(";\n\t}");
     }
 
+    private void addInserts() {
+        // Don't generate inserts if at max dim
+        if (dimension == CodeGenerator.GLOBAL_MAX_DIM) {
+            return;
+        }
+        for (int i = 0; i <= dimension && i < CodeGenerator.GLOBAL_MAX_DIM; ++i) {
+            addInsert(i);
+            newLine(2);
+        }
+        // add variable adds between dimension and maxGlobal
+    }
+
+    private void addInsert(int dim) {
+        String newClassName = className(dimension + 1);
+        // Dimension 0 is not an edge case here
+        StringJoiner newDimensions = new StringJoiner(", ");
+        for (int i = 0; i < dimension; ++i) {
+            if (i == dim) {
+                newDimensions.add("T");
+            }
+            newDimensions.add("X" + i);
+        }
+        // Handle the edge case since i < dimension
+        if (dimension == dim) {
+            newDimensions.add("T");
+        }
+        String returnType = newClassName + "<" + newDimensions + ">";
+        String args = newDimensions.toString().toLowerCase();
+        src.append("\tpublic <T> ").append(returnType).append(" insertX").append(dim).append("(T t) {\n");
+        src.append("\t\treturn new ").append(returnType).append("(").append(args).append(");\n\t}");
+    }
 
 
     private void newLine() {
