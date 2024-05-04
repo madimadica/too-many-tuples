@@ -28,7 +28,6 @@ public class TupleGenerator {
 
         newLine(2);
         addClassDeclaration();
-        newLine();
         addClassAttributes();
         newLine(2);
         addNoArgsConstructor();
@@ -48,12 +47,12 @@ public class TupleGenerator {
 
     private void addClassDeclaration() {
         src.append("public class ").append(getGenericType(dimensions));
-        src.append(" {\n");
+        src.append(" {");
     }
 
     private void addClassAttributes() {
         for (int i = 0; i < dimension; ++i) {
-            src.append("\tprivate ").append(getDimensionParameter(i)).append(";");
+            src.append("\n\tprivate ").append(getDimensionParameter(i)).append(";");
         }
     }
 
