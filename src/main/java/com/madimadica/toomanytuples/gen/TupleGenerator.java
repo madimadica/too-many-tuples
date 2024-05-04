@@ -128,7 +128,13 @@ public class TupleGenerator {
     }
 
     private void addMultiInsert(int newDimension) {
-
+        List<Integer> newDims = range(this.dimension, newDimension);
+        src.append("\tpublic <").append(getGenerics(newDims)).append("> ")
+                .append(getGenericType(newDimension)).append(" insert(")
+                .append(getDimensionParameters(newDims)).append(") {\n")
+                .append("\t\treturn new ").append(getShortGenericType(newDimension))
+                .append("(").append(getDimensionArguments(newDimension))
+                .append(");\n\t}");
     }
 
 
