@@ -40,6 +40,7 @@ public class TupleGenerator {
         addInserts();
         addRemoves();
         addConverts();
+        addReplaces();
         src.append("}");
         System.out.println(src);
     }
@@ -177,6 +178,22 @@ public class TupleGenerator {
                 .append(");\n\t}");
     }
 
+    private void addReplaces() {
+        for (int i = 0; i < dimension; ++i) {
+            addReplace(i);
+            newLine(2);
+        }
+    }
+
+    private void addReplace(int dim) {
+        String returnType = getGenericType(dimension).replace("X" + dim, "T");
+        src.append("\tpublic <T> ").append(returnType).append(" replaceX").append(dim)
+                .append("(T t) {\n")
+                .append("\t\treturn new ").append(getShortGenericType(dimension))
+                .append("(")
+                .append(getDimensionArguments(dimension).replace("x" + dim, "t"))
+                .append(");\n\t}");
+    }
 
     private void newLine() {
         src.append('\n');
