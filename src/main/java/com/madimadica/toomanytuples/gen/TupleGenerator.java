@@ -41,6 +41,7 @@ public class TupleGenerator {
         addRemoves();
         addConverts();
         addReplaces();
+        addSwaps();
         src.append("}");
         System.out.println(src);
     }
@@ -192,6 +193,30 @@ public class TupleGenerator {
                 .append("\t\treturn new ").append(getShortGenericType(dimension))
                 .append("(")
                 .append(getDimensionArguments(dimension).replace("x" + dim, "t"))
+                .append(");\n\t}");
+    }
+
+    private void addSwaps() {
+        for (int i = 0; i < dimension - 1; i++) {
+            for (int j = i + 1; j < dimension; j++) {
+                addSwap(i, j);
+                newLine(2);
+            }
+        }
+    }
+
+    private void addSwap(int left, int right) {
+        List<Integer> dims = range(0, dimension);
+        dims.set(left, right);
+        dims.set(right, left);
+        String returnType = getGenericType(dims);
+        String shortType = getShortGenericType(dimension);
+        src.append("\tpublic ").append(returnType)
+                .append(" swapX").append(left).append("withX").append(right)
+                .append("() {\n")
+                .append("\t\treturn new ").append(shortType)
+                .append("(")
+                .append(getDimensionArguments(dims))
                 .append(");\n\t}");
     }
 
