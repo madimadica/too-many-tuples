@@ -38,6 +38,7 @@ public class TupleGenerator {
         addGetters();
         addSetters();
         addInserts();
+        addRemoves();
         src.append("}");
         System.out.println(src);
     }
@@ -134,6 +135,26 @@ public class TupleGenerator {
                 .append(getDimensionParameters(newDims)).append(") {\n")
                 .append("\t\treturn new ").append(getShortGenericType(newDimension))
                 .append("(").append(getDimensionArguments(newDimension))
+                .append(");\n\t}");
+    }
+
+    private void addRemoves() {
+        for (int i = 0; i < dimension; ++i) {
+            addRemove(i);
+            newLine(2);
+        }
+    }
+
+    private void addRemove(int dim) {
+        List<Integer> resultingDimensions = range(0, dimension);
+        resultingDimensions.remove(Integer.valueOf(dim));
+        String returnType = getGenericType(resultingDimensions);
+        String shortType = getShortGenericType(resultingDimensions.size());
+        src.append("\tpublic ").append(returnType).append(" removeX").append(dim)
+                .append("() {\n\t\t")
+                .append("return new ").append(shortType)
+                .append("(")
+                .append(getDimensionArguments(resultingDimensions))
                 .append(");\n\t}");
     }
 
